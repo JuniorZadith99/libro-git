@@ -1,0 +1,216 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "APIPlanilla",
+        "version": "1.0.0",
+        "description": "API Planilla SEFIN"
+    },
+    "paths": {
+        "/plani/generarplanilla": {
+            "servers": [
+                {
+                    "url": "http://localhost:8081/api",
+                    "description": ""
+                }
+            ],
+            "post": {
+                "requestBody": {
+                    "description": "Arreglo de empleados",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Empleado"
+                                }
+                            },
+                            "examples": {
+                                "Arreglo de empleados": {
+                                    "value": [
+                                        {
+                                            "Id": 4,
+                                            "nombre": "some text",
+                                            "apellido": "some text",
+                                            "salario": 51.97
+                                        },
+                                        {
+                                            "Id": 90.96,
+                                            "nombre": "some text",
+                                            "apellido": "some text",
+                                            "salario": 26.51
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Planilla"
+                ],
+                "parameters": [
+                    {
+                        "name": "mes",
+                        "description": "",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "name": "anio",
+                        "description": "",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/rsPlanilla"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/rsError"
+                    }
+                },
+                "summary": "Generar planilla"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Empleado": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "Id": {
+                        "description": "Id del empleado",
+                        "type": "number"
+                    },
+                    "nombre": {
+                        "description": "Nombre del empleado",
+                        "type": "string"
+                    },
+                    "apellido": {
+                        "description": "Apellido del empleado",
+                        "type": "string"
+                    },
+                    "salario": {
+                        "format": "double",
+                        "description": "Salario del emppleado",
+                        "type": "number"
+                    }
+                }
+            },
+            "Planilla": {
+                "description": "Planilla de SEFIN",
+                "type": "object",
+                "properties": {
+                    "anio": {
+                        "description": "Anio de la planilla",
+                        "type": "number"
+                    },
+                    "mes": {
+                        "description": "Mes de la planilla",
+                        "type": "number"
+                    },
+                    "totalPlanilla": {
+                        "format": "double",
+                        "description": "Total de la planilla        ",
+                        "type": "number"
+                    },
+                    "lstEmpleados": {
+                        "description": "Listado de empleados",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Empleado"
+                        }
+                    }
+                }
+            },
+            "msjError": {
+                "description": "Mensajes de error",
+                "type": "object",
+                "properties": {
+                    "codigoError": {
+                        "description": "Codigo del error",
+                        "type": "string"
+                    },
+                    "mensaje": {
+                        "description": "Mensaje del error",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "rsError": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/msjError"
+                        },
+                        "examples": {
+                            "Error": {
+                                "value": {
+                                    "codigoError": "some text",
+                                    "mensaje": "some text"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "rsPlanilla": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Planilla"
+                        },
+                        "examples": {
+                            "Planilla": {
+                                "value": {
+                                    "anio": 2021,
+                                    "mes": 6,
+                                    "totalPlanilla": 90.23,
+                                    "lstEmpleados": [
+                                        {
+                                            "Id": 6,
+                                            "nombre": "some text",
+                                            "apellido": "some text",
+                                            "salario": 20.27
+                                        },
+                                        {
+                                            "Id": 7,
+                                            "nombre": "some text",
+                                            "apellido": "some text",
+                                            "salario": 70.54
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            }
+        },
+        "securitySchemes": {
+            "SEFIN-SSO": {
+                "flows": {
+
+                },
+                "type": "oauth2",
+                "description": "Esquema de seguridad SEFIN"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Planilla",
+            "description": ""
+        }
+    ]
+}
